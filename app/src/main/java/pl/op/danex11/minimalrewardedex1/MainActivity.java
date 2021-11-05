@@ -151,9 +151,12 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(textview);
 
         Button button = new Button(this);
-        layout.addView(button);
         button.setText("Watch");
         button.setPadding(0,100,0,0);
+        RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        buttonParams.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
+        buttonParams.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        layout.addView(button,buttonParams);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
