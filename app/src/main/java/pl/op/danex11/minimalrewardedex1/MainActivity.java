@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
@@ -25,11 +29,14 @@ public class MainActivity extends AppCompatActivity {
     boolean initializationDone = false;
     String TAG = "tag";
     private RewardedAd mRewardedAd;
+    int adCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_main);
+         setContentView(R.layout.activity_main);
+
+
 
         // initialize the Google Mobile Ads SDK
         // initializes the SDK and calls back a completion listener once initialization is complete (or after a 30-second timeout).
@@ -116,10 +123,44 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "The user earned the reward.");
                     int rewardAmount = rewardItem.getAmount();
                     String rewardType = rewardItem.getType();
+                    adCounter++;
                 }
             });
         } else {
             Log.e(TAG, "The rewarded ad wasn't ready yet.");
         }
     }
+
+    @Override
+    protected  void onResume(){
+        super.onResume();
+
+        //Layout params
+        RelativeLayout layout = new RelativeLayout(this);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+        layout.setLayoutParams(params);
+        //set layout
+        setContentView(layout);
+
+        TextView textview = new TextView(this);
+        textview.setText("Number of completely watched rewarded ads: " + adCounter);
+        textview.setTextSize(15);
+        //add textview to layout
+        layout.addView(textview);
+
+        Button button = new Button(this);
+        layout.addView(button);
+        button.setText("Watch");
+        button.setPadding(0,100,0,0);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+                loadAd();
+            }
+        });
+
+    }
+
 }
